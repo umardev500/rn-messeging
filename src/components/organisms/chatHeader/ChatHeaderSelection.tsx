@@ -12,7 +12,7 @@ import { Header } from '../header';
 
 export const ChatHeaderSelection: React.FC = () => {
   const context = useContext(ChatContext) as ChatContextProps;
-  const [counter, setCounter] = useState<number>(0);
+  const [counter, setCounter] = useState<number>(1);
   const headerIndex = useSharedValue<number>(0);
 
   // back handler
@@ -23,6 +23,7 @@ export const ChatHeaderSelection: React.FC = () => {
       if (context.selectedItems.value.length < 1) return false;
 
       context.selectedItems.value = [];
+      setCounter(1);
 
       return true;
     });
@@ -92,7 +93,9 @@ export const ChatHeaderSelection: React.FC = () => {
 
   // watch selected items for counter
   useDerivedValue(() => {
-    runOnJS(setCounter)(context.selectedItems.value.length);
+    const selectedIemSize = context.selectedItems.value.length;
+
+    if (selectedIemSize >= 1) runOnJS(setCounter)(selectedIemSize);
   }, []);
 
   // reply handler
