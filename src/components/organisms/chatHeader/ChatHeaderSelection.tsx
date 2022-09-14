@@ -1,5 +1,5 @@
-import React, { useCallback, useContext, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { BackHandler, StyleSheet } from 'react-native';
 import Animated, {
   runOnJS,
   runOnUI,
@@ -14,6 +14,19 @@ export const ChatHeaderSelection: React.FC = () => {
   const context = useContext(ChatContext) as ChatContextProps;
   const [counter, setCounter] = useState<number>(0);
   const headerIndex = useSharedValue<number>(0);
+
+  // back handler
+  // will reset all selection if have a item is selected
+  // will be back to previous screen if no selected item
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      if (context.selectedItems.value.length < 1) return false;
+
+      context.selectedItems.value = [];
+
+      return true;
+    });
+  }, []);
 
   const handleClickDelete = useCallback(() => {
     'woklet';
@@ -72,10 +85,15 @@ export const ChatHeaderSelection: React.FC = () => {
     context.replyItem.value = context.selectedItems.value;
   }, []);
 
+  // back click handler
+  const handleBack = useCallback(() => {
+    context.selectedItems.value = [];
+  }, []);
+
   return (
     <Animated.View style={[styles.container, headerStyle]}>
       <Header>
-        <Header.Action icon="arrow-back" onTap={() => {}} />
+        <Header.Action icon="arrow-back" onTap={handleBack} />
         <Header.Content title={counter.toString()} />
         {counter <= 1 ? (
           <Header.Action icon="reply" onTap={runOnUI(handleClickReply)} />
