@@ -169,13 +169,19 @@ export const ChatListing: React.FC<Props> = ({ id, username, text, prev }) => {
     }
   }, []);
 
+  const deleteItem = () => {
+    'worklet';
+
+    context.deletedCount.value += 1; // push to deleted count
+    deleted.value = true; // will triger deleted style
+    selected.value = false; // make selected to false to make not fall inside this again
+  };
+
   // listening for data
   useDerivedValue(() => {
-    if (context.selectedItems.value.length < 1 && selected.value) {
-      console.log('need to deleted');
-
-      deleted.value = true; // will triger deleted style
-      selected.value = false; // make selected to false to make not fall inside this again
+    const data = context.deletedItems.value.filter(item => item.id === id);
+    if (data.length > 0) {
+      deleteItem();
     }
   }, []);
 

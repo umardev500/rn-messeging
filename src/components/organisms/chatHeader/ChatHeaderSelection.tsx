@@ -28,11 +28,31 @@ export const ChatHeaderSelection: React.FC = () => {
     });
   }, []);
 
+  // clear deletion
+  const clearDeletion = (deletedCount: number) => {
+    'worklet';
+
+    const deletedItemSize = context.deletedItems.value.length;
+
+    if (deletedCount !== 0 && deletedCount === deletedItemSize) {
+      context.deletedItems.value = [];
+      context.selectedItems.value = [];
+      context.deletedCount.value = 0;
+    }
+  };
+
+  // watch deleted counter
+  useDerivedValue(() => {
+    // console.log('counter', context.deletedCount.value.length);
+    // console.log('items to delete', context.deletedItems.value.length);
+    clearDeletion(context.deletedCount.value);
+  }, []);
+
   const handleClickDelete = useCallback(() => {
     'woklet';
 
     // console.log(context.selectedItems.value);
-    context.selectedItems.value = [];
+    context.deletedItems.value = context.selectedItems.value;
   }, []);
 
   // reanimated style for header

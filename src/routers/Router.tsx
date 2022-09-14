@@ -10,7 +10,7 @@ export const Router: React.FC = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="HomeRouter"
+        initialRouteName="Chat"
         screenOptions={{
           cardStyleInterpolator: () => ({}),
           headerShown: false,
