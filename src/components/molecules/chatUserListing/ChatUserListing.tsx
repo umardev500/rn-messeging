@@ -16,7 +16,7 @@ export const ChatUserListing: React.FC<Props> = ({ navigation }) => {
   }, []);
 
   return (
-    <TouchableRipple onTap={handleNavigate}>
+    <TouchableRipple onTap={handleNavigate} rippleColor={colors.primary[500]}>
       <Box style={styles.container}>
         <Avatar
           width={50}
