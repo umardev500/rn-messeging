@@ -69,20 +69,28 @@ export const ChatReplyCard: React.FC = () => {
   const cardOverlayHeight = useSharedValue<number>(0);
   const cardOpacity = useSharedValue<number>(0);
 
+  // show hide
+  const showHideCard = (
+    condition: boolean,
+    status: boolean,
+    height: number,
+    opacity: number
+  ) => {
+    if (condition) {
+      replyStatus.value = status;
+      cardHeight.value = withTiming(height);
+      cardOpacity.value = withTiming(opacity);
+    }
+  };
+
   // show reply card
   const showCard = () => {
-    replyStatus.value = true;
-    cardHeight.value = withTiming(cardOverlayHeight.value);
-    cardOpacity.value = withTiming(1);
+    showHideCard(true, true, cardOverlayHeight.value, 1);
   };
 
   // hide reply card
   const hideCard = () => {
-    if (replyStatus.value) {
-      replyStatus.value = false;
-      cardHeight.value = withTiming(0);
-      cardOpacity.value = withTiming(0);
-    }
+    showHideCard(replyStatus.value, false, 0, 0);
   };
 
   useDerivedValue(() => {
