@@ -39,6 +39,7 @@ export const ChatHeaderSelection: React.FC = () => {
       context.deletedItems.value = [];
       context.selectedItems.value = [];
       context.deletedCount.value = 0;
+      runOnJS(setCounter)(1);
     }
   };
 
