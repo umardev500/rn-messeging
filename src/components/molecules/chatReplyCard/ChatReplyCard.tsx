@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Animated, {
   runOnJS,
+  runOnUI,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
@@ -120,9 +121,10 @@ export const ChatReplyCard: React.FC = () => {
     };
   });
 
-  // measure overlay height
-  const handleLayout = (e: LayoutChangeEvent) => {
-    const { height } = e.nativeEvent.layout;
+  // change cardHeight
+  const changeCardHeight = (height: number) => {
+    'worklet';
+
     cardOverlayHeight.value = height;
 
     if (replyStatus.value) {
@@ -130,10 +132,23 @@ export const ChatReplyCard: React.FC = () => {
     }
   };
 
+  // measure overlay height
+  const handleLayout = (e: LayoutChangeEvent) => {
+    const { height } = e.nativeEvent.layout;
+
+    runOnUI(changeCardHeight)(height);
+  };
+
+  // manipulate item
+  const changeItem = (value: ChatListItem[]) => {
+    'worklet';
+
+    context.replyItem.value = value;
+  };
+
   // close handler
   const handleClose = useCallback(() => {
-    console.log('close pressed');
-    context.replyItem.value = [];
+    runOnUI(changeItem)([]);
   }, []);
 
   return (
