@@ -32,6 +32,7 @@ const REPLY_BTN_SIZE = 30;
 export const ChatListing: React.FC<Props> = ({ id, username, text, prev }) => {
   const overlayOpacity = useSharedValue<number>(0);
   const selected = useSharedValue<boolean>(false);
+  const deleted = useSharedValue<boolean>(false);
   const translateX = useSharedValue<number>(0);
   const replyTranslateX = useSharedValue<number>(0);
   const context = useContext(ChatContext) as ChatContextProps;
@@ -63,6 +64,20 @@ export const ChatListing: React.FC<Props> = ({ id, username, text, prev }) => {
     return {
       opacity: overlayOpacity.value,
     };
+  });
+
+  // reanimated style for hidding chat card
+  const chatCardDeletedStyle = useAnimatedStyle(() => {
+    if (deleted.value)
+      return {
+        opacity: 0,
+        height: 0,
+        marginTop: 0,
+        paddingTop: 0,
+        paddingBottom: 0,
+      };
+
+    return {};
   });
 
   // card gesture event
@@ -140,14 +155,29 @@ export const ChatListing: React.FC<Props> = ({ id, username, text, prev }) => {
 
   // listening for data
   useDerivedValue(() => {
-    console.log('selected items', context.selectedItems.value.length);
+    // console.log(
+    //   'selected items',
+    //   context.selectedItems.value.length,
+    //   selected.value
+    // );
+
+    if (context.selectedItems.value.length < 1 && selected.value) {
+      console.log('need to deleted');
+
+      deleted.value = true; // will triger deleted style
+      selected.value = false; // make selected to false to make not fall inside this again
+    }
   }, []);
 
   return (
     <Pressable onPress={handlePress} onLongPress={handleLongPress}>
       <PanGestureHandler onGestureEvent={panGestureEvent}>
         <Animated.View
-          style={[styles.wrapper, prev ? styles.prevWrapper : undefined]}
+          style={[
+            styles.wrapper,
+            prev ? styles.prevWrapper : undefined,
+            chatCardDeletedStyle,
+          ]}
         >
           <Animated.View
             style={[
