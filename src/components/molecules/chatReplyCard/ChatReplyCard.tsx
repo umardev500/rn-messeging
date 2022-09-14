@@ -1,6 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import {
   LayoutChangeEvent,
+  Pressable,
   StyleProp,
   StyleSheet,
   ViewProps,
@@ -13,6 +14,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import Mdi from 'react-native-vector-icons/MaterialIcons';
 import { ChatContext, ChatContextProps } from '../../../contexts';
 import { colors } from '../../../themes';
 import { Box, Col, Row, Text } from '../../atoms';
@@ -65,11 +67,22 @@ export const ChatReplyCard: React.FC = () => {
   const replyStatus = useSharedValue<boolean>(false);
   const cardHeight = useSharedValue<number>(0);
   const cardOverlayHeight = useSharedValue<number>(0);
+  const cardOpacity = useSharedValue<number>(0);
 
   // show reply card
   const showCard = () => {
     replyStatus.value = true;
     cardHeight.value = withTiming(cardOverlayHeight.value);
+    cardOpacity.value = withTiming(1);
+  };
+
+  // hide reply card
+  const hideCard = () => {
+    if (replyStatus.value) {
+      replyStatus.value = false;
+      cardHeight.value = withTiming(0);
+      cardOpacity.value = withTiming(0);
+    }
   };
 
   useDerivedValue(() => {
@@ -77,8 +90,11 @@ export const ChatReplyCard: React.FC = () => {
     const replyDataSize = replyData.length;
 
     if (replyDataSize > 0) {
-      console.log('more then zero');
       runOnJS(showCard)();
+    }
+
+    if (replyDataSize < 1) {
+      runOnJS(hideCard)();
     }
   });
 
@@ -86,6 +102,7 @@ export const ChatReplyCard: React.FC = () => {
   const cardStyle = useAnimatedStyle(() => {
     return {
       height: cardHeight.value,
+      opacity: cardOpacity.value,
     };
   });
 
@@ -99,6 +116,12 @@ export const ChatReplyCard: React.FC = () => {
     }
   };
 
+  // close handler
+  const handleClose = useCallback(() => {
+    console.log('close pressed');
+    context.replyItem.value = [];
+  }, []);
+
   return (
     <>
       <Card
@@ -107,6 +130,9 @@ export const ChatReplyCard: React.FC = () => {
         style={styles.overlayContainer}
       />
       <Card context={context} style={cardStyle} />
+      <Pressable style={styles.close} onPress={handleClose}>
+        <Mdi name="close" color="#6b767f" />
+      </Pressable>
     </>
   );
 };
@@ -130,5 +156,14 @@ const styles = StyleSheet.create({
   overlayContainer: {
     position: 'absolute',
     opacity: 0,
+  },
+  close: {
+    position: 'absolute',
+    right: 10,
+    top: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 2,
+    borderRadius: 10,
   },
 });
