@@ -68,7 +68,9 @@ export const ChatHeaderSelection: React.FC = () => {
       <Header>
         <Header.Action icon="arrow-back" onTap={() => {}} />
         <Header.Content title={counter.toString()} />
-        <Header.Action icon="reply" onTap={handleClickReply} />
+        {counter <= 1 ? (
+          <Header.Action icon="reply" onTap={handleClickReply} />
+        ) : null}
         <Header.Action icon="star" />
         <Header.Action icon="delete" onTap={handleClickDelete} />
         <Header.Action icon="more-vert" />
