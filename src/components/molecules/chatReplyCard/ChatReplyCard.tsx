@@ -32,7 +32,7 @@ const Card: React.FC<CardProps> = ({ style, context, ...props }) => {
   const [item, setItem] = useState<ChatListItem | null>(null);
 
   useDerivedValue(() => {
-    console.log('context');
+    // console.log('context');
     if (context.replyItem.value.length > 0) {
       runOnJS(setItem)(context.replyItem.value[0]);
     }

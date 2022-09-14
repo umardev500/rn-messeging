@@ -102,7 +102,7 @@ export const ChatHeaderSelection: React.FC = () => {
   const handleClickReply = useCallback(() => {
     'woklet';
 
-    console.log('reply data', context.selectedItems.value);
+    // console.log('reply data', context.selectedItems.value);
 
     // set value for reply item
     context.replyItem.value = context.selectedItems.value;
