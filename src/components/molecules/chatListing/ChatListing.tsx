@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import {
   PanGestureHandler,
@@ -7,9 +7,11 @@ import {
 import Animated, {
   useAnimatedGestureHandler,
   useAnimatedStyle,
+  useDerivedValue,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import { ChatContext, ChatContextProps } from '../../../contexts';
 import { colors } from '../../../themes';
 import { IconButton, Text } from '../../atoms';
 
@@ -32,6 +34,7 @@ export const ChatListing: React.FC<Props> = ({ id, username, text, prev }) => {
   const selected = useSharedValue<boolean>(false);
   const translateX = useSharedValue<number>(0);
   const replyTranslateX = useSharedValue<number>(0);
+  const context = useContext(ChatContext) as ChatContextProps;
 
   // style for chat translation
   const chatCardStyle = useAnimatedStyle(() => {
@@ -68,8 +71,10 @@ export const ChatListing: React.FC<Props> = ({ id, username, text, prev }) => {
       onActive: e => {
         translateX.value = e.translationX;
 
+        // check maximum translation for reply button
         const replyShouldBeStop = e.translationX <= MAX_TRANSLATE_X;
         if (replyShouldBeStop) {
+          // value will folow current translation
           replyTranslateX.value = e.translationX;
         } else if (replyTranslateX.value < MIN_TRANSLATE_X) {
           // fix reply button leaved on speed swipe
@@ -86,6 +91,16 @@ export const ChatListing: React.FC<Props> = ({ id, username, text, prev }) => {
   const activatedSelection = () => {
     selected.value = true; // activate selected state
     overlayOpacity.value = 0.3; // show overlay
+
+    // add to selected items context
+    context.selectedItems.value = [
+      ...context.selectedItems.value,
+      {
+        id,
+        username,
+        text,
+      },
+    ];
   };
 
   // long press handler
@@ -99,14 +114,33 @@ export const ChatListing: React.FC<Props> = ({ id, username, text, prev }) => {
   const nonActivatedSelection = () => {
     selected.value = false;
     overlayOpacity.value = 0;
+
+    // find all selected items
+    // except this item
+    const newSelectedItems = context.selectedItems.value.filter(
+      item => item.id !== id
+    );
+
+    // change value of selected items with new data items
+    context.selectedItems.value = newSelectedItems;
   };
 
   // press handler for activate selected item
   // otherwise depending by state itself
   const handlePress = useCallback(() => {
     if (selected.value) {
+      // will be non-activated if selected state is true
       nonActivatedSelection();
+    } else if (!selected.value && context.selectedItems.value.length > 0) {
+      // will be activated if selection is one
+      // indicated by length of selected items more thean 0
+      activatedSelection();
     }
+  }, []);
+
+  // listening for data
+  useDerivedValue(() => {
+    console.log('selected items', context.selectedItems.value.length);
   }, []);
 
   return (
