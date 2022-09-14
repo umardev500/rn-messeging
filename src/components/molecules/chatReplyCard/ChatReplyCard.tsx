@@ -76,6 +76,8 @@ export const ChatReplyCard: React.FC = () => {
     height: number,
     opacity: number
   ) => {
+    'worklet';
+
     if (condition) {
       replyStatus.value = status;
       cardHeight.value = withTiming(height);
@@ -85,11 +87,15 @@ export const ChatReplyCard: React.FC = () => {
 
   // show reply card
   const showCard = () => {
+    'worklet';
+
     showHideCard(true, true, cardOverlayHeight.value, 1);
   };
 
   // hide reply card
   const hideCard = () => {
+    'worklet';
+
     showHideCard(replyStatus.value, false, 0, 0);
   };
 
@@ -98,11 +104,11 @@ export const ChatReplyCard: React.FC = () => {
     const replyDataSize = replyData.length;
 
     if (replyDataSize > 0) {
-      runOnJS(showCard)();
+      showCard();
     }
 
     if (replyDataSize < 1) {
-      runOnJS(hideCard)();
+      hideCard();
     }
   });
 
