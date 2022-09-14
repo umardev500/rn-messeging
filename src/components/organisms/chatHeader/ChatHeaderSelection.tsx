@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, {
   runOnJS,
+  runOnUI,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
@@ -15,6 +16,8 @@ export const ChatHeaderSelection: React.FC = () => {
   const headerIndex = useSharedValue<number>(0);
 
   const handleClickDelete = useCallback(() => {
+    'woklet';
+
     // console.log(context.selectedItems.value);
     context.selectedItems.value = [];
   }, []);
@@ -28,11 +31,15 @@ export const ChatHeaderSelection: React.FC = () => {
 
   // update header shared value
   const showingHeader = () => {
+    'worklet';
+
     headerIndex.value = 1;
   };
 
   // hiding header by update value
   const hidingHeader = () => {
+    'worklet';
+
     headerIndex.value = 0;
   };
 
@@ -42,11 +49,11 @@ export const ChatHeaderSelection: React.FC = () => {
       context.selectedItems.value.length > 0 &&
       context.selectedItems.value.length < 2
     ) {
-      runOnJS(showingHeader)();
+      showingHeader();
     }
 
     if (context.selectedItems.value.length < 1) {
-      runOnJS(hidingHeader)();
+      hidingHeader();
     }
   }, []);
 
@@ -57,6 +64,8 @@ export const ChatHeaderSelection: React.FC = () => {
 
   // reply handler
   const handleClickReply = useCallback(() => {
+    'woklet';
+
     console.log('reply data', context.selectedItems.value);
 
     // set value for reply item
@@ -69,10 +78,10 @@ export const ChatHeaderSelection: React.FC = () => {
         <Header.Action icon="arrow-back" onTap={() => {}} />
         <Header.Content title={counter.toString()} />
         {counter <= 1 ? (
-          <Header.Action icon="reply" onTap={handleClickReply} />
+          <Header.Action icon="reply" onTap={runOnUI(handleClickReply)} />
         ) : null}
         <Header.Action icon="star" />
-        <Header.Action icon="delete" onTap={handleClickDelete} />
+        <Header.Action icon="delete" onTap={runOnUI(handleClickDelete)} />
         <Header.Action icon="more-vert" />
       </Header>
     </Animated.View>
