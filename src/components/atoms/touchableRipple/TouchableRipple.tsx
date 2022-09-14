@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  ColorValue,
   LayoutChangeEvent,
   StyleProp,
   StyleSheet,
@@ -21,6 +22,7 @@ import Animated, {
 type Props = {
   children?: React.ReactNode;
   borderRadius?: number;
+  rippleColor?: ColorValue;
   onTap?: () => void;
   style?: StyleProp<ViewStyle>;
 };
@@ -28,6 +30,7 @@ type Props = {
 export const TouchableRipple: React.FC<Props> = ({
   children,
   borderRadius,
+  rippleColor = 'rgba(0, 0, 0, .4)',
   onTap,
   style,
 }) => {
@@ -60,7 +63,7 @@ export const TouchableRipple: React.FC<Props> = ({
       },
       onActive: () => {
         scale.value = withTiming(1, { duration: animDuration });
-        bgRippleOpacity.value = withTiming(1, { duration: animDuration });
+        bgRippleOpacity.value = withTiming(0.1, { duration: animDuration });
       },
       onEnd: () => {
         opacity.value = withTiming(0, { duration: animDuration });
@@ -107,10 +110,20 @@ export const TouchableRipple: React.FC<Props> = ({
           onLayout={handleLayout}
         >
           {children}
-          <Animated.View style={[styles.ripple, rippleStyle]} />
+          <Animated.View
+            style={[
+              styles.ripple,
+              rippleStyle,
+              { backgroundColor: rippleColor },
+            ]}
+          />
         </Animated.View>
         <Animated.View
-          style={[styles.bgRipple, rippleBgStyle, { borderRadius }]}
+          style={[
+            styles.bgRipple,
+            rippleBgStyle,
+            { borderRadius, backgroundColor: rippleColor },
+          ]}
         />
       </Animated.View>
     </TapGestureHandler>
@@ -124,7 +137,7 @@ const styles = StyleSheet.create({
   },
   ripple: {
     position: 'absolute',
-    backgroundColor: 'rgba(0, 0, 0, .5)',
+    // backgroundColor: 'rgba(0, 0, 0, .5)',
     zIndex: 1,
   },
   bgRipple: {
@@ -133,6 +146,6 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, .4)',
+    // backgroundColor: 'rgba(0, 0, 0, .4)',
   },
 });
