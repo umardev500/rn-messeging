@@ -43,6 +43,7 @@ export const Text: React.FC<Props> = ({
   color,
   fz,
   ff,
+  ...props
 }) => {
   return (
     <RnText
@@ -87,6 +88,7 @@ export const Text: React.FC<Props> = ({
         },
         style,
       ]}
+      {...props}
     >
       {children}
     </RnText>
