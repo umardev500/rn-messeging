@@ -18,6 +18,8 @@ import { colors } from '../../../themes';
 import { Box, Col, Row, Text } from '../../atoms';
 import { ChatListItem } from '../chatListing';
 
+const NUMBER_OF_LINES = 2;
+
 type CardProps = {
   style?: StyleProp<Animated.AnimateStyle<StyleProp<ViewStyle>>>;
   context: ChatContextProps;
@@ -49,7 +51,9 @@ const Card: React.FC<CardProps> = ({ style, context, ...props }) => {
           <Text fz={14} ff="Roboto-Medium" color={colors.primary[500]}>
             {item?.username}
           </Text>
-          <Text color="#6b767f">{item?.text}</Text>
+          <Text color="#6b767f" numberOfLines={NUMBER_OF_LINES}>
+            {item?.text}
+          </Text>
         </Col>
       </Row>
     </Animated.View>
