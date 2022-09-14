@@ -5,6 +5,7 @@ import {
   PanGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 import Animated, {
+  runOnJS,
   useAnimatedGestureHandler,
   useAnimatedStyle,
   useDerivedValue,
@@ -80,6 +81,14 @@ export const ChatListing: React.FC<Props> = ({ id, username, text, prev }) => {
     return {};
   });
 
+  // reply handler
+  const handleReply = () => {
+    console.log('reply handling');
+
+    // set data to context
+    context.replyItem.value = [{ id, username, text }];
+  };
+
   // card gesture event
   const panGestureEvent =
     useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
@@ -97,6 +106,9 @@ export const ChatListing: React.FC<Props> = ({ id, username, text, prev }) => {
         }
       },
       onEnd: () => {
+        if (translateX.value >= MIN_TRANSLATE_X) {
+          runOnJS(handleReply)();
+        }
         translateX.value = withTiming(0);
         replyTranslateX.value = withTiming(0);
       },
