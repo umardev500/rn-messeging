@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
-import { IconButton, Row } from '../../atoms';
+import { IconButton } from '../../atoms';
 
 export const ChatInput: React.FC = () => {
   return (
-    <Row flex={1} bg="white" minH={50} br={25} el={0}>
+    <>
       <IconButton
         style={styles.emojiBtn}
         name="insert-emoticon"
@@ -24,7 +24,7 @@ export const ChatInput: React.FC = () => {
         size={50}
         iconSize={25}
       />
-    </Row>
+    </>
   );
 };
 
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     left: 0,
   },
   input: {
-    lex: 1,
+    flex: 1,
     backgroundColor: 'white',
     minHeight: 50,
     borderRadius: 25,
