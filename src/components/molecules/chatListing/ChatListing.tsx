@@ -76,6 +76,7 @@ export const ChatListing: React.FC<Props> = ({ id, username, text, prev }) => {
         marginTop: 0,
         paddingTop: 0,
         paddingBottom: 0,
+        overflow: 'hidden',
       };
 
     return {};
