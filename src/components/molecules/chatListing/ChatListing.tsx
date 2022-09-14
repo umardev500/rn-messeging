@@ -185,6 +185,22 @@ export const ChatListing: React.FC<Props> = ({ id, username, text, prev }) => {
     }
   }, []);
 
+  // reset selected
+  const resetSelected = () => {
+    'worklet';
+
+    if (selected.value) {
+      nonActivatedSelection();
+    }
+  };
+
+  // listening for selected items
+  useDerivedValue(() => {
+    if (context.selectedItems.value.length < 1 && selected.value) {
+      resetSelected();
+    }
+  }, []);
+
   return (
     <Pressable onPress={handlePress} onLongPress={handleLongPress}>
       <PanGestureHandler onGestureEvent={panGestureEvent}>
