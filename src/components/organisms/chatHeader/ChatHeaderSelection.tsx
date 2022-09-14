@@ -55,12 +55,20 @@ export const ChatHeaderSelection: React.FC = () => {
     runOnJS(setCounter)(context.selectedItems.value.length);
   }, []);
 
+  // reply handler
+  const handleClickReply = useCallback(() => {
+    console.log('reply data', context.selectedItems.value);
+
+    // set value for reply item
+    context.replyItem.value = context.selectedItems.value;
+  }, []);
+
   return (
     <Animated.View style={[styles.container, headerStyle]}>
       <Header>
         <Header.Action icon="arrow-back" onTap={() => {}} />
         <Header.Content title={counter.toString()} />
-        <Header.Action icon="reply" onTap={() => {}} />
+        <Header.Action icon="reply" onTap={handleClickReply} />
         <Header.Action icon="star" />
         <Header.Action icon="delete" onTap={handleClickDelete} />
         <Header.Action icon="more-vert" />

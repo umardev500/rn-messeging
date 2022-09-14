@@ -4,6 +4,7 @@ import { ChatListItem } from '../components/molecules';
 
 export type ChatContextProps = {
   selectedItems: SharedValue<ChatListItem[]>;
+  replyItem: SharedValue<ChatListItem[]>;
 };
 
 export const ChatContext = React.createContext({});

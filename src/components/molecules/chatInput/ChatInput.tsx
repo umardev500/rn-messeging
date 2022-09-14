@@ -1,21 +1,21 @@
 import React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
-import { IconButton } from '../../atoms';
+import { IconButton, Row } from '../../atoms';
 
 export const ChatInput: React.FC = () => {
   return (
-    <>
-      <IconButton
-        style={styles.emojiBtn}
-        name="insert-emoticon"
-        bg="white"
-        size={50}
-      />
+    <Row>
       <TextInput
         style={styles.input}
         placeholderTextColor="#666"
         placeholder="Message"
         multiline
+      />
+      <IconButton
+        style={styles.emojiBtn}
+        name="insert-emoticon"
+        bg="white"
+        size={50}
       />
       <IconButton
         style={styles.attachment}
@@ -24,7 +24,7 @@ export const ChatInput: React.FC = () => {
         size={50}
         iconSize={25}
       />
-    </>
+    </Row>
   );
 };
 

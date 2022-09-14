@@ -9,10 +9,12 @@ type Props = {
 
 export const ChatProvider: React.FC<Props> = ({ children }) => {
   const selectedItems = useSharedValue<ChatListItem[]>([]);
+  const replyItem = useSharedValue<ChatListItem[]>([]);
 
   const data = useMemo<ChatContextProps>(() => {
     return {
       selectedItems,
+      replyItem,
     };
   }, []);
 

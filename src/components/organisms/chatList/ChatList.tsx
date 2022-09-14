@@ -28,7 +28,7 @@ export const ChatList: React.FC = () => {
     {
       id: 5,
       username: 'Mark',
-      text: "if yes, i'm so sorry I can't.",
+      text: "if yes, i'm so sorry I can't. if yes, i'm so sorry I can't. if yes, i'm so sorry I can't. if yes, i'm so sorry I can't.",
     },
   ]);
 
@@ -52,6 +52,8 @@ export const ChatList: React.FC = () => {
 
 const styles = StyleSheet.create({
   listContainer: {
+    flex: 1,
     paddingTop: 5,
+    paddingBottom: 55,
   },
 });
