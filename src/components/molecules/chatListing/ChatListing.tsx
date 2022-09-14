@@ -5,7 +5,7 @@ import {
   PanGestureHandlerGestureEvent,
 } from 'react-native-gesture-handler';
 import Animated, {
-  runOnJS,
+  runOnUI,
   useAnimatedGestureHandler,
   useAnimatedStyle,
   useDerivedValue,
@@ -83,7 +83,7 @@ export const ChatListing: React.FC<Props> = ({ id, username, text, prev }) => {
 
   // reply handler
   const handleReply = () => {
-    console.log('reply handling');
+    'worklet';
 
     // set data to context
     context.replyItem.value = [{ id, username, text }];
@@ -107,7 +107,7 @@ export const ChatListing: React.FC<Props> = ({ id, username, text, prev }) => {
       },
       onEnd: () => {
         if (translateX.value >= MIN_TRANSLATE_X) {
-          runOnJS(handleReply)();
+          handleReply();
         }
         translateX.value = withTiming(0);
         replyTranslateX.value = withTiming(0);
@@ -116,6 +116,8 @@ export const ChatListing: React.FC<Props> = ({ id, username, text, prev }) => {
 
   // handler for activated selection
   const activatedSelection = () => {
+    'worklet';
+
     selected.value = true; // activate selected state
     overlayOpacity.value = 0.3; // show overlay
 
@@ -133,12 +135,14 @@ export const ChatListing: React.FC<Props> = ({ id, username, text, prev }) => {
   // long press handler
   const handleLongPress = useCallback(() => {
     if (!selected.value) {
-      activatedSelection();
+      runOnUI(activatedSelection)();
     }
   }, []);
 
   // handler for non-activated selection
   const nonActivatedSelection = () => {
+    'worklet';
+
     selected.value = false;
     overlayOpacity.value = 0;
 
@@ -157,22 +161,16 @@ export const ChatListing: React.FC<Props> = ({ id, username, text, prev }) => {
   const handlePress = useCallback(() => {
     if (selected.value) {
       // will be non-activated if selected state is true
-      nonActivatedSelection();
+      runOnUI(nonActivatedSelection)();
     } else if (!selected.value && context.selectedItems.value.length > 0) {
       // will be activated if selection is one
       // indicated by length of selected items more thean 0
-      activatedSelection();
+      runOnUI(activatedSelection)();
     }
   }, []);
 
   // listening for data
   useDerivedValue(() => {
-    // console.log(
-    //   'selected items',
-    //   context.selectedItems.value.length,
-    //   selected.value
-    // );
-
     if (context.selectedItems.value.length < 1 && selected.value) {
       console.log('need to deleted');
 
