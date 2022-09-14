@@ -1,8 +1,13 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { Header } from '../header';
 
 export const ChatHeader: React.FC = () => {
-  const handleBack = useCallback(() => {}, []);
+  const navigation = useNavigation();
+
+  const handleBack = useCallback(() => {
+    if (navigation.canGoBack()) navigation.goBack();
+  }, []);
 
   return (
     <Header>
