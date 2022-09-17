@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Header } from '../header';
 
-export const MainHeader: React.FC = () => {
+export const MainHeader = React.memo(() => {
   return (
     <Header>
       <Header.Content
@@ -13,7 +13,7 @@ export const MainHeader: React.FC = () => {
       <Header.Action icon="more-vert" />
     </Header>
   );
-};
+});
 
 const styles = StyleSheet.create({
   contenteContainer: {
