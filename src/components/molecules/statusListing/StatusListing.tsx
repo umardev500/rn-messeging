@@ -1,8 +1,9 @@
 import { StackNavigationProp } from '@react-navigation/stack';
-import React, { useCallback } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { colors } from '../../../themes';
 import { RootStackParamList } from '../../../types';
-import { Avatar, Col, Text } from '../../atoms';
+import { Avatar, Box, Col, Text, TouchableRipple } from '../../atoms';
 
 export type StatusItem = {
   type: 'unread' | 'read';
@@ -15,28 +16,30 @@ type Props = {
 };
 
 export const StatusListing: React.FC<Props> = ({ navigation }) => {
-  const handleNavigate = useCallback(() => {
-    navigation.navigate('Chat');
-  }, []);
+  // const handleNavigate = useCallback(() => {
+  //   navigation.navigate('Chat');
+  // }, []);
 
   return (
-    <Pressable onPress={handleNavigate} style={styles.container}>
-      <Avatar
-        width={50}
-        height={50}
-        source={require('../../../../assets/avatars/brian-hughes.jpg')}
-      />
-      <Col flex={1} pl={15}>
-        <Col>
-          <Text fz={17} color="#444" ff="Roboto-Medium">
-            Linus Torvalds
-          </Text>
-          <Text fz={15} mt={2} color="#6b767f">
-            Yesterday, 8:19 PM
-          </Text>
+    <TouchableRipple rippleColor={colors.primary[500]}>
+      <Box style={styles.container}>
+        <Avatar
+          width={50}
+          height={50}
+          source={require('../../../../assets/avatars/brian-hughes.jpg')}
+        />
+        <Col flex={1} pl={15}>
+          <Col>
+            <Text fz={17} color="#444" ff="Roboto-Medium">
+              Linus Torvalds
+            </Text>
+            <Text fz={15} mt={2} color="#6b767f">
+              Yesterday, 8:19 PM
+            </Text>
+          </Col>
         </Col>
-      </Col>
-    </Pressable>
+      </Box>
+    </TouchableRipple>
   );
 };
 
