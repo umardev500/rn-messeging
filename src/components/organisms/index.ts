@@ -6,3 +6,4 @@ export * from './header';
 export * from './chatHeader';
 export * from './chatList';
 export * from './chatForm';
+export * from './mainHeader';
