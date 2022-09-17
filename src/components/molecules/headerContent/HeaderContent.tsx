@@ -1,16 +1,29 @@
 import React from 'react';
-import { ImageSourcePropType, StyleSheet, Text, View } from 'react-native';
+import {
+  ImageSourcePropType,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { Avatar } from '../../atoms';
 
 type Props = {
   fz?: number;
   title: string;
   avatar?: ImageSourcePropType;
+  containerStyle?: StyleProp<ViewStyle>;
 };
 
-export const HeaderContent: React.FC<Props> = ({ fz = 20, title, avatar }) => {
+export const HeaderContent: React.FC<Props> = ({
+  fz = 20,
+  title,
+  avatar,
+  containerStyle,
+}) => {
   return (
-    <View style={[styles.container]}>
+    <View style={[styles.container, containerStyle]}>
       {avatar ? (
         <Avatar width={38} height={38} style={styles.avatar} source={avatar} />
       ) : null}
