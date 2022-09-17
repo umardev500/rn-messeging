@@ -1,9 +1,10 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
-import { useSharedValue } from 'react-native-reanimated';
 import { Col } from '../components/atoms';
 import { Fab, MainHeader } from '../components/organisms';
+import { TabContext, TabContextProps } from '../contexts';
+import { TabProvider } from '../providers';
 import { HomeScreen } from '../screens';
 import { CallScreen } from '../screens/call';
 import { StatuScreen } from '../screens/status';
@@ -12,12 +13,12 @@ import { colors } from '../themes';
 const Tab = createMaterialTopTabNavigator();
 
 const HomeRouterNavigation: React.FC = () => {
-  const routeSelected = useSharedValue<number>(0);
+  const context = useContext(TabContext) as TabContextProps;
 
   const changeRouteSelected = (value: number) => {
     'worklet';
 
-    routeSelected.value = value;
+    context.index.value = value;
   };
 
   const handleMoved = (routeName: string) => {
@@ -64,7 +65,11 @@ const HomeRouterNavigation: React.FC = () => {
 };
 
 export const HomeRouter = React.memo(() => {
-  return <HomeRouterNavigation />;
+  return (
+    <TabProvider>
+      <HomeRouterNavigation />
+    </TabProvider>
+  );
 });
 
 const styles = StyleSheet.create({
