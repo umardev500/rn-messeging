@@ -21,6 +21,7 @@ export const Fab = React.memo(({ context }: Props) => {
   const statusFabIndex = useSharedValue(0);
   const callFabIndex = useSharedValue(0);
   const textTabTranslateY = useSharedValue(0);
+  const textFabOpacity = useSharedValue(0);
 
   const changeIndex = (index: number) => {
     'worklet';
@@ -32,6 +33,7 @@ export const Fab = React.memo(({ context }: Props) => {
       textTabTranslateY.value = withTiming(0, {
         duration: STATUS_TEXT_FAB_DUR,
       });
+      textFabOpacity.value = withTiming(0, { duration: STATUS_TEXT_FAB_DUR });
     }
     if (index === 1) {
       statusFabIndex.value = 1;
@@ -40,6 +42,7 @@ export const Fab = React.memo(({ context }: Props) => {
       textTabTranslateY.value = withTiming(-56, {
         duration: STATUS_TEXT_FAB_DUR,
       });
+      textFabOpacity.value = withTiming(1, { duration: STATUS_TEXT_FAB_DUR });
     }
     if (index === 2) {
       callFabIndex.value = 1;
@@ -48,6 +51,7 @@ export const Fab = React.memo(({ context }: Props) => {
       textTabTranslateY.value = withTiming(0, {
         duration: STATUS_TEXT_FAB_DUR,
       });
+      textFabOpacity.value = withTiming(0, { duration: STATUS_TEXT_FAB_DUR });
     }
   };
 
@@ -69,6 +73,7 @@ export const Fab = React.memo(({ context }: Props) => {
 
   const statusTextFabStyle = useAnimatedStyle(() => {
     return {
+      opacity: textFabOpacity.value,
       transform: [
         {
           translateY: textTabTranslateY.value,
