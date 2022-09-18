@@ -1,6 +1,10 @@
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import {
+  createMaterialTopTabNavigator,
+  MaterialTopTabBar,
+} from '@react-navigation/material-top-tabs';
 import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
+import { runOnUI } from 'react-native-reanimated';
 import { Col } from '../components/atoms';
 import { Fab, MainHeader } from '../components/organisms';
 import { TabContext, TabContextProps } from '../contexts';
@@ -24,15 +28,15 @@ const HomeRouterNavigation: React.FC = () => {
   const handleMoved = (routeName: string) => {
     switch (routeName) {
       case 'Home':
-        changeRouteSelected(0);
+        runOnUI(changeRouteSelected)(0);
         break;
 
       case 'Status':
-        changeRouteSelected(1);
+        runOnUI(changeRouteSelected)(1);
         break;
 
       case 'Call':
-        changeRouteSelected(2);
+        runOnUI(changeRouteSelected)(2);
         break;
 
       default:
@@ -45,6 +49,7 @@ const HomeRouterNavigation: React.FC = () => {
     <Col flex={1}>
       <MainHeader />
       <Tab.Navigator
+        tabBar={props => <MaterialTopTabBar {...props} />}
         screenListeners={({ route }) => ({
           swipeEnd: () => handleMoved(route.name),
         })}
@@ -59,7 +64,7 @@ const HomeRouterNavigation: React.FC = () => {
         <Tab.Screen name="Status" component={StatuScreen} />
         <Tab.Screen name="Call" component={CallScreen} />
       </Tab.Navigator>
-      <Fab />
+      <Fab context={context} />
     </Col>
   );
 };
