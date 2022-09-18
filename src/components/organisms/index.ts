@@ -7,3 +7,4 @@ export * from './chatHeader';
 export * from './chatList';
 export * from './chatForm';
 export * from './mainHeader';
+export * from './topTabBar';

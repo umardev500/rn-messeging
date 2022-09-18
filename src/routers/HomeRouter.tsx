@@ -1,12 +1,8 @@
-import {
-  createMaterialTopTabNavigator,
-  MaterialTopTabBar,
-} from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
-import { runOnUI } from 'react-native-reanimated';
 import { Col } from '../components/atoms';
-import { Fab, MainHeader } from '../components/organisms';
+import { Fab, MainHeader, TopTabBar } from '../components/organisms';
 import { TabContext, TabContextProps } from '../contexts';
 import { TabProvider } from '../providers';
 import { HomeScreen } from '../screens';
@@ -19,40 +15,11 @@ const Tab = createMaterialTopTabNavigator();
 const HomeRouterNavigation: React.FC = () => {
   const context = useContext(TabContext) as TabContextProps;
 
-  const changeRouteSelected = (value: number) => {
-    'worklet';
-
-    context.index.value = value;
-  };
-
-  const handleMoved = (routeName: string) => {
-    switch (routeName) {
-      case 'Home':
-        runOnUI(changeRouteSelected)(0);
-        break;
-
-      case 'Status':
-        runOnUI(changeRouteSelected)(1);
-        break;
-
-      case 'Call':
-        runOnUI(changeRouteSelected)(2);
-        break;
-
-      default:
-        console.log('default route');
-        break;
-    }
-  };
-
   return (
     <Col flex={1}>
       <MainHeader />
       <Tab.Navigator
-        tabBar={props => <MaterialTopTabBar {...props} />}
-        screenListeners={({ route }) => ({
-          swipeEnd: () => handleMoved(route.name),
-        })}
+        tabBar={props => <TopTabBar context={context} {...props} />}
         screenOptions={{
           tabBarStyle: styles.tabBarStyle,
           tabBarLabelStyle: styles.tabBarLabelStyle,
