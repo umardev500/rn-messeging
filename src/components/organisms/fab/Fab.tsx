@@ -4,6 +4,7 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
+  withTiming,
 } from 'react-native-reanimated';
 import { TabContextProps } from '../../../contexts';
 import { colors } from '../../../themes';
@@ -13,10 +14,13 @@ type Props = {
   context: TabContextProps;
 };
 
+const STATUS_TEXT_FAB_DUR = 100;
+
 export const Fab = React.memo(({ context }: Props) => {
   const homeFabIndex = useSharedValue(1);
   const statusFabIndex = useSharedValue(0);
   const callFabIndex = useSharedValue(0);
+  const textTabTranslateY = useSharedValue(0);
 
   const changeIndex = (index: number) => {
     'worklet';
@@ -25,16 +29,25 @@ export const Fab = React.memo(({ context }: Props) => {
       homeFabIndex.value = 1;
       statusFabIndex.value = 0;
       callFabIndex.value = 0;
+      textTabTranslateY.value = withTiming(0, {
+        duration: STATUS_TEXT_FAB_DUR,
+      });
     }
     if (index === 1) {
       statusFabIndex.value = 1;
       homeFabIndex.value = 0;
       callFabIndex.value = 0;
+      textTabTranslateY.value = withTiming(-56, {
+        duration: STATUS_TEXT_FAB_DUR,
+      });
     }
     if (index === 2) {
       callFabIndex.value = 1;
       statusFabIndex.value = 0;
       homeFabIndex.value = 0;
+      textTabTranslateY.value = withTiming(0, {
+        duration: STATUS_TEXT_FAB_DUR,
+      });
     }
   };
 
@@ -54,6 +67,16 @@ export const Fab = React.memo(({ context }: Props) => {
     };
   }, []);
 
+  const statusTextFabStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY: textTabTranslateY.value,
+        },
+      ],
+    };
+  }, []);
+
   const callFabStyle = useAnimatedStyle(() => {
     return {
       zIndex: callFabIndex.value,
@@ -61,13 +84,23 @@ export const Fab = React.memo(({ context }: Props) => {
   }, []);
 
   return (
-    <Col pos="absolute" b={20} r={15}>
+    <Col pos="absolute" ai="center" b={20} r={15}>
       <Animated.View style={[styles.fab, callFabStyle]}>
         <IconButton
           color="white"
           bg={colors.primary[400]}
           size={56}
           name="phone"
+        />
+      </Animated.View>
+
+      <Animated.View style={[styles.fab, statusTextFabStyle]}>
+        <IconButton
+          color="#6b767f"
+          bg="#eee"
+          size={45}
+          elevation={8}
+          name="edit"
         />
       </Animated.View>
 
@@ -97,4 +130,5 @@ const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
   },
+  edit: {},
 });
