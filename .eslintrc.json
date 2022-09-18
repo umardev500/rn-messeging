@@ -39,7 +39,8 @@
     "import/no-extraneous-dependencies": "off",
     "react/jsx-props-no-spreading": "off",
     "array-callback-return": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "react/style-prop-object": "off"
   },
   "settings": {
     "import/resolver": {
